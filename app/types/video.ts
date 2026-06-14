@@ -7,5 +7,4 @@ export interface Video {
   commentsCount: number;
   sharesCount: number;
   musicName?: string;
-  authorAvatar?: string;
 }

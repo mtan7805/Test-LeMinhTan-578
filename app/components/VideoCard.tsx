@@ -3,27 +3,31 @@
 import { useEffect, useRef, useState } from "react";
 import { Video } from "../types/video";
 import {
-  CommentIcon,
-  HeartIcon,
   MusicIcon,
-  ShareIcon,
   VolumeMuteIcon,
   VolumeUpIcon,
+  PlayIcon,
+  PauseIcon,
 } from "./Icons";
-
-const formatNumber = (num: number) => {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-};
-
-export const VideoCard: React.FC<{ video: Video; isActive: boolean }> = ({
-  video,
-  isActive,
-}) => {
+import { VideoActionsProps } from "./VideoActions";
+export const VideoCard: React.FC<{
+  video: Video;
+  isActive: boolean;
+  isMuted: boolean;
+  setIsMuted: (muted: boolean) => void;
+}> = ({ video, isActive, isMuted, setIsMuted }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(video.likesCount);
+  const [isLoading, setIsLoading] = useState(isActive);
+  const [playFlashKey, setPlayFlashKey] = useState<number | null>(null);
+
+  const [prevActive, setPrevActive] = useState(isActive);
+  if (isActive !== prevActive) {
+    setPrevActive(isActive);
+    setIsLoading(isActive);
+  }
 
   useEffect(() => {
     const videoEl = videoRef.current;
@@ -37,6 +41,7 @@ export const VideoCard: React.FC<{ video: Video; isActive: boolean }> = ({
     if (!videoEl) return;
 
     if (isActive) {
+      setIsLoading(true);
       videoEl.muted = isMuted;
       videoEl
         .play()
@@ -49,11 +54,13 @@ export const VideoCard: React.FC<{ video: Video; isActive: boolean }> = ({
             err,
           );
           setIsPlaying(false);
+          setIsLoading(false);
         });
     } else {
       videoEl.pause();
       videoEl.currentTime = 0;
       setIsPlaying(false);
+      setIsLoading(false);
     }
   }, [isActive]);
 
@@ -65,12 +72,18 @@ export const VideoCard: React.FC<{ video: Video; isActive: boolean }> = ({
     if (isPlaying) {
       videoEl.pause();
       setIsPlaying(false);
+      setPlayFlashKey(null);
     } else {
       videoEl.muted = isMuted;
       videoEl
         .play()
-        .then(() => setIsPlaying(true))
-        .catch((err) => console.log(err));
+        .then(() => {
+          setIsPlaying(true);
+          setPlayFlashKey(Date.now());
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -85,7 +98,7 @@ export const VideoCard: React.FC<{ video: Video; isActive: boolean }> = ({
   };
 
   return (
-    <div className="relative w-full h-full max-w-[450px] bg-black rounded-2xl overflow-hidden shadow-2xl flex flex-center justify-center">
+    <div className="relative w-full h-full max-w-[450px] bg-black rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center">
       <video
         ref={videoRef}
         src={video.videoUrl}
@@ -94,7 +107,33 @@ export const VideoCard: React.FC<{ video: Video; isActive: boolean }> = ({
         playsInline
         muted={isMuted}
         onClick={handlePlayPause}
+        preload={isActive ? "auto" : "metadata"}
+        onLoadStart={() => {
+          if (videoRef.current && !videoRef.current.paused) {
+            setIsLoading(true);
+          }
+        }}
+        onWaiting={() => {
+          if (videoRef.current && !videoRef.current.paused) {
+            setIsLoading(true);
+          }
+        }}
+        onPlaying={() => setIsLoading(false)}
+        onCanPlay={() => setIsLoading(false)}
+        onSeeking={() => {
+          if (videoRef.current && !videoRef.current.paused) {
+            setIsLoading(true);
+          }
+        }}
+        onSeeked={() => setIsLoading(false)}
       />
+
+      {/* Loading Spinner */}
+      {isLoading && (
+        <div className="video-loading-overlay">
+          <div className="video-spinner"></div>
+        </div>
+      )}
 
       {/* Loa */}
       <button
@@ -109,34 +148,42 @@ export const VideoCard: React.FC<{ video: Video; isActive: boolean }> = ({
 
       <div className="absolute bottom-0 left-0 right-0 p-5 pb-24 md:pb-5 text-white bg-gradient-to-t from-black/80 via-black/40 to-transparent">
         <h3 className="font-bold mb-1">@{video.authorName}</h3>
-        <p className="text-sm text-zinc-200 mb-2">{video.description}</p>
+        <p className="text-sm text-text-secondary mb-2">{video.description}</p>
         {video.musicName && (
-          <div className="flex items-center gap-2 text-xs text-zinc-400">
+          <div className="flex items-center gap-2 text-xs text-text-muted">
             <MusicIcon size={14} />
             <span>{video.musicName}</span>
           </div>
         )}
       </div>
 
-      <div className="absolute right-4 bottom-20 flex flex-col gap-4 items-center">
-        <button
-          onClick={handleLike}
-          className="w-12 h-12 rounded-full flex items-center bg-black/40 justify-center text-white"
+      {playFlashKey !== null && (
+        <div
+          key={playFlashKey}
+          className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none"
+          onAnimationEnd={() => setPlayFlashKey(null)}
         >
-          <HeartIcon active={isLiked} />
-        </button>
-        <span className="text-xs text-white">{formatNumber(likes)}</span>
+          <div className="w-16 h-16 rounded-full bg-black/50 flex items-center justify-center text-white backdrop-blur-sm animate-fade-out">
+            <PlayIcon size={30} />
+          </div>
+        </div>
+      )}
 
-        <button className="w-12 h-12 rounded-full flex items-center bg-black/40 justify-center text-white">
-          <CommentIcon />
-        </button>
-        <span className="text-xs text-white">{video.commentsCount}</span>
+      {isActive && !isPlaying && !isLoading && playFlashKey === null && (
+        <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+          <div className="w-16 h-16 rounded-full bg-black/50 flex items-center justify-center text-white backdrop-blur-sm shadow-xl">
+            <PauseIcon size={30} className="translate-x-[2px]" />
+          </div>
+        </div>
+      )}
 
-        <button className="w-12 h-12 rounded-full flex items-center bg-black/40 justify-center text-white">
-          <ShareIcon />
-        </button>
-        <span className="text-xs text-white">{video.sharesCount}</span>
-      </div>
+      <VideoActionsProps
+        likesCount={likes}
+        commentsCount={video.commentsCount}
+        sharesCount={video.sharesCount}
+        isLiked={isLiked}
+        onLike={handleLike}
+      />
     </div>
   );
 };

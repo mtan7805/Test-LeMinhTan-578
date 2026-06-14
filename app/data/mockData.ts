@@ -11,7 +11,6 @@ export const mockVideos: Video[] = [
     commentsCount: 382,
     sharesCount: 156,
     musicName: "Big Buck Bunny Original - Blender Foundation",
-    authorAvatar: "	https://avatars.githubusercontent.com/u/140865049?v=4",
   },
   {
     id: "video-2",
@@ -24,8 +23,6 @@ export const mockVideos: Video[] = [
     commentsCount: 204,
     sharesCount: 88,
     musicName: "Lofi Friday Night - Music Chill Out",
-    authorAvatar:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
   },
   {
     id: "video-3",
@@ -37,8 +34,6 @@ export const mockVideos: Video[] = [
     commentsCount: 912,
     sharesCount: 432,
     musicName: "Sintel Symphony Orchestra - Durian Project",
-    authorAvatar:
-      "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100&h=100&fit=crop",
   },
   {
     id: "video-4",
@@ -51,8 +46,6 @@ export const mockVideos: Video[] = [
     commentsCount: 1243,
     sharesCount: 843,
     musicName: "Nature Sounds Meditation - Sleep Music",
-    authorAvatar:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
   },
   {
     id: "video-5",
@@ -65,7 +58,5 @@ export const mockVideos: Video[] = [
     commentsCount: 789,
     sharesCount: 301,
     musicName: "Acoustic Country Guitar Journey - Folk Band",
-    authorAvatar:
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop",
   },
 ];

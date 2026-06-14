@@ -9,6 +9,7 @@ export const VideoFeed: React.FC = () => {
   const [activeVideoId, setActiveVideoId] = useState<string | null>(
     mockVideos[0]?.id || null,
   );
+  const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -22,7 +23,6 @@ export const VideoFeed: React.FC = () => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          console.log(entry, "entryentry");
           const id = entry.target.getAttribute("data-video-id");
           if (id) setActiveVideoId(id);
         }
@@ -42,7 +42,7 @@ export const VideoFeed: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="w-full h-screen overflow-y-scroll snap-y snap-mandatory scrollbar-none scroll-smooth  bg-zinc-950 flex flex-col"
+      className="w-full h-screen overflow-y-scroll snap-y snap-mandatory scrollbar-none scroll-smooth  bg-bg-dark flex flex-col"
     >
       {mockVideos.map((video) => (
         <section
@@ -50,7 +50,12 @@ export const VideoFeed: React.FC = () => {
           data-video-id={video.id}
           className="w-full h-screen snap-start flex justify-center items-center flex-shrink-0"
         >
-          <VideoCard video={video} isActive={video.id === activeVideoId} />
+          <VideoCard
+            video={video}
+            isActive={video.id === activeVideoId}
+            isMuted={isMuted}
+            setIsMuted={setIsMuted}
+          />
         </section>
       ))}
     </div>

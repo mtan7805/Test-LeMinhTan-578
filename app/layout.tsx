@@ -8,7 +8,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi" className="h-full">
-      <body className="min-h-full bg-zinc-950 text-white flex flex-row overflow-hidden">
+      <body className="min-h-full bg-bg-dark text-white flex flex-row overflow-hidden">
         <Navigation />
         <main className="flex-1 h-screen relative md:ml-64 overflow-hidden">
           {children}
