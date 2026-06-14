@@ -9,14 +9,42 @@ export const Navigation: React.FC = () => {
 
   const menuItems = [
     { href: "/", label: "Trang chủ", icon: HomeIcon, active: pathname === "/" },
-    { href: "/explore", label: "Khám phá", icon: CompassIcon, active: pathname === "/explore" },
-    { href: "/profile", label: "Hồ sơ", icon: UserIcon, active: pathname === "/profile" },
+    {
+      href: "/explore",
+      label: "Khám phá",
+      icon: CompassIcon,
+      active: pathname === "/explore",
+    },
+    {
+      href: "/profile",
+      label: "Hồ sơ",
+      icon: UserIcon,
+      active: pathname === "/profile",
+    },
   ] as const;
 
   return (
     <>
       <div className="hidden md:flex flex-col w-64 h-screen bg-bg-dark border-r border-r-border-dark fixed top-0 left-0 p-4 text-white z-40">
-        <div className="text-xl font-bold mb-8 p-2">Le Minh Tan</div>
+        <div className="flex text-xl font-bold mb-8 p-2 gap-3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 25 25"
+            width="25"
+            height="25"
+          >
+            <rect width="25" height="25" fill="#0d1117" rx="4" />
+            <path
+              d="M 4,19 L 4,6 L 9,12 L 14,6 L 14,19 M 14,6 L 21,6 M 17.5,6 L 17.5,19"
+              fill="none"
+              stroke="#00f2fe"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <p className="hidden md:inline">Le Minh Tan</p>
+        </div>
         <nav className="flex flex-col gap-2">
           {menuItems.map((item) => (
             <Link
