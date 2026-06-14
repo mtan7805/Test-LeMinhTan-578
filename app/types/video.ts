@@ -1,6 +1,6 @@
 export interface Video {
   id: string;
-  videoURL: string;
+  videoUrl: string;
   authorName: string;
   description: string;
   likesCount: number;

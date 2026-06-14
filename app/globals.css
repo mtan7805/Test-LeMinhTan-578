@@ -9,7 +9,7 @@
   --color-text-muted: #a1a1aa;
 }
 
-/* Hiệu ứng 3: Biểu tượng Play/Pause nhấp nháy khi nhấp vào video */
+/* Play/Pause nhấp nháy khi nhấp vào video */
 @keyframes fade-out {
   0% {
     opacity: 0;
@@ -47,7 +47,7 @@
 .video-spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid rgba(63, 63, 70, 0.5); 
+  border: 4px solid rgba(63, 63, 70, 0.5);
   border-top-color: var(--color-primary);
   border-radius: 50%;
   animation: spin-loader 1s linear infinite;
@@ -61,4 +61,3 @@
     transform: rotate(360deg);
   }
 }
-

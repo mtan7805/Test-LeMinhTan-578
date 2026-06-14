@@ -48,7 +48,7 @@ export const VideoFeed: React.FC = () => {
         <section
           key={video.id}
           data-video-id={video.id}
-          className="w-full h-screen snap-start flex justify-center items-center flex-shrink-0"
+          className="w-full h-screen snap-start flex justify-center items-center shrink-0"
         >
           <VideoCard
             video={video}
