@@ -1,26 +1,60 @@
 @import "tailwindcss";
+/* app/globals.css */
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Ẩn thanh cuộn mặc định của trình duyệt */
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Dành cho Chrome, Safari */
+}
+.scrollbar-none {
+  -ms-overflow-style: none; /* Dành cho IE/Edge */
+  scrollbar-width: none; /* Dành cho Firefox */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Hiệu ứng 1: Chữ chạy (Marquee) cho tên bài hát */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
   }
 }
+.animate-marquee {
+  animation: marquee 12s linear infinite;
+}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Hiệu ứng 2: Đĩa nhạc tự xoay khi video đang phát */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+/* Hiệu ứng 3: Biểu tượng Play/Pause nhấp nháy khi nhấp vào video */
+@keyframes fade-out {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+.animate-fade-out {
+  animation: fade-out 0.6s ease-out forwards;
 }
