@@ -20,7 +20,7 @@ export const ProfileVideoList: React.FC<ProfileVideoListProps> = ({
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 w-full">
+    <div className="grid grid-cols-2  md:grid-cols-3 gap-4 w-full">
       {videos.map((video) => (
         <ProfileVideoCard key={video.id} video={video} />
       ))}

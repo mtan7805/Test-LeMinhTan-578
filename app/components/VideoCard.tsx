@@ -9,7 +9,8 @@ import {
   PlayIcon,
   PauseIcon,
 } from "./Icons";
-import { VideoActionsProps } from "./VideoActions";
+import { VideoActions } from "./VideoActions";
+import TextExpander from "./TextExpander";
 export const VideoCard: React.FC<{
   video: Video;
   isActive: boolean;
@@ -23,36 +24,19 @@ export const VideoCard: React.FC<{
   const [isLoading, setIsLoading] = useState(isActive);
   const [playFlashKey, setPlayFlashKey] = useState<number | null>(null);
 
-  const [prevActive, setPrevActive] = useState(isActive);
-  if (isActive !== prevActive) {
-    setPrevActive(isActive);
-    setIsLoading(isActive);
-  }
-
-  useEffect(() => {
-    const videoEl = videoRef.current;
-    if (videoEl) {
-      videoEl.muted = isMuted;
-    }
-  }, [isMuted]);
-
   useEffect(() => {
     const videoEl = videoRef.current;
     if (!videoEl) return;
 
     if (isActive) {
       setIsLoading(true);
-      videoEl.muted = isMuted;
       videoEl
         .play()
         .then(() => {
           setIsPlaying(true);
         })
         .catch((err) => {
-          console.log(
-            "Autoplay bị chặn do có tiếng. Chờ click từ người dùng...",
-            err,
-          );
+          console.log("Autoplay bị chặn do có tiếng", err);
           setIsPlaying(false);
           setIsLoading(false);
         });
@@ -74,7 +58,6 @@ export const VideoCard: React.FC<{
       setIsPlaying(false);
       setPlayFlashKey(null);
     } else {
-      videoEl.muted = isMuted;
       videoEl
         .play()
         .then(() => {
@@ -108,24 +91,8 @@ export const VideoCard: React.FC<{
         muted={isMuted}
         onClick={handlePlayPause}
         preload={isActive ? "auto" : "metadata"}
-        onLoadStart={() => {
-          if (videoRef.current && !videoRef.current.paused) {
-            setIsLoading(true);
-          }
-        }}
-        onWaiting={() => {
-          if (videoRef.current && !videoRef.current.paused) {
-            setIsLoading(true);
-          }
-        }}
+        onWaiting={() => setIsLoading(true)}
         onPlaying={() => setIsLoading(false)}
-        onCanPlay={() => setIsLoading(false)}
-        onSeeking={() => {
-          if (videoRef.current && !videoRef.current.paused) {
-            setIsLoading(true);
-          }
-        }}
-        onSeeked={() => setIsLoading(false)}
       />
 
       {/* Loading Spinner */}
@@ -146,9 +113,11 @@ export const VideoCard: React.FC<{
         {isMuted ? <VolumeMuteIcon /> : <VolumeUpIcon />}
       </button>
 
-      <div className="absolute bottom-0 left-0 right-0 p-5 pb-24 md:pb-5 text-white bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+      <div className="absolute bottom-0 left-0 right-0 p-5 pb-24 sm:pb-5 text-white bg-gradient-to-t from-black/80 via-black/40 to-transparent">
         <h3 className="font-bold mb-1">@{video.authorName}</h3>
-        <p className="text-sm text-text-secondary mb-2">{video.description}</p>
+        <p className="text-sm text-text-secondary mb-2">
+          <TextExpander>{video.description}</TextExpander>
+        </p>
         {video.musicName && (
           <div className="flex items-center gap-2 text-xs text-text-muted">
             <MusicIcon size={14} />
@@ -177,7 +146,7 @@ export const VideoCard: React.FC<{
         </div>
       )}
 
-      <VideoActionsProps
+      <VideoActions
         likesCount={likes}
         commentsCount={video.commentsCount}
         sharesCount={video.sharesCount}

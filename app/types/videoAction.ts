@@ -1,7 +1,7 @@
-export interface VideoActions {
-  likesCount: number;
-  commentsCount: number;
-  sharesCount: number;
+import { VideoStats } from "./videoStats";
+
+export interface VideoActionsProps extends VideoStats {
   isLiked: boolean;
   onLike: () => void;
 }
+

@@ -42,7 +42,7 @@ export const VideoFeed: React.FC = () => {
   return (
     <div
       ref={containerRef}
-      className="w-full h-screen overflow-y-scroll snap-y snap-mandatory scrollbar-none scroll-smooth  bg-bg-dark flex flex-col"
+      className="w-full h-screen overflow-y-scroll snap-y snap-mandatory scrollbar-none scroll-smooth bg-bg-dark"
     >
       {mockVideos.map((video) => (
         <section

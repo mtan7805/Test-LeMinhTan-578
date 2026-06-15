@@ -1,20 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import ProfileVideoList from "../components/ProfileVideoList";
+import Button from "../components/Button";
 import { mockVideos } from "../data/mockData";
 
 export default function Explore() {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const fillteredVideos = mockVideos.filter((video) => {
-    const query = searchQuery.toLowerCase();
-    return (
-      video.authorName.toLowerCase().includes(query) ||
-      video.description.toLowerCase().includes(query) ||
-      (video.musicName && video.musicName.toLowerCase().includes(query))
-    );
-  });
+  const filteredVideos = useMemo(() => {
+    const query = searchQuery.toLowerCase().trim();
+    if (!query) return mockVideos;
+    return mockVideos.filter((video) => {
+      return (
+        video.authorName.toLowerCase().includes(query) ||
+        video.description.toLowerCase().includes(query) ||
+        (video.musicName && video.musicName.toLowerCase().includes(query))
+      );
+    });
+  }, [searchQuery]);
 
   const trendingTags = [
     "#leminhtan",
@@ -30,7 +34,7 @@ export default function Explore() {
       <div className="w-full max-w-[800px] flex flex-col gap-6">
         {/* Header */}
         <div>
-          <h1 className="text-xl font-bold tracking-tight">Khám phá</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Khám phá</h1>
           <p className="text-xs text-text-muted mt-0.5">Tìm kiếm thịnh hành</p>
         </div>
 
@@ -41,7 +45,7 @@ export default function Explore() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Tìm kiếm tài khoản, nhạc, nội dung"
-            className="w-full h-full bg-zinc-900 border border-zinc-800 text-xs rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-primary transition-colors"
+            className="w-full bg-zinc-900 border border-zinc-800 text-xs rounded-xl py-3 pl-10 pr-4 text-white focus:outline-none focus:border-primary transition-colors"
           />
           <svg
             className="w-4 h-4 absolute left-3.5 top-3.5 text-zinc-500"
@@ -88,12 +92,9 @@ export default function Explore() {
 
           <div className="flex flex-wrap gap-2">
             {trendingTags.map((tag) => (
-              <button
-                key={tag}
-                className="px-3 py-1.5 rounded-lg text-xs font-semibold border border-zinc-800 transition-colors"
-              >
+              <Button key={tag} tag>
                 {tag}
-              </button>
+              </Button>
             ))}
           </div>
         </div>
@@ -103,7 +104,7 @@ export default function Explore() {
           <h2 className="text-xs font-bold text-text-secondary uppercase">
             {searchQuery ? "Kết quả tìm kiếm" : "Video thịnh hành"}
           </h2>
-          <ProfileVideoList videos={fillteredVideos} />
+          <ProfileVideoList videos={filteredVideos} />
         </div>
       </div>
     </div>

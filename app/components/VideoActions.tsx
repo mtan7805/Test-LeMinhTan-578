@@ -2,13 +2,13 @@
 
 import React from "react";
 import { CommentIcon, HeartIcon, ShareIcon } from "./Icons";
-import { VideoActions } from "../types/videoAction";
+import { VideoActionsProps } from "../types/videoAction";
 
 const formatNumber = (num: number) => {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
-export const VideoActionsProps: React.FC<VideoActions> = ({
+export const VideoActions: React.FC<VideoActionsProps> = ({
   likesCount,
   commentsCount,
   sharesCount,
@@ -16,7 +16,7 @@ export const VideoActionsProps: React.FC<VideoActions> = ({
   onLike,
 }) => {
   return (
-    <div className="absolute right-4 bottom-20 flex flex-col gap-4 items-center z-30">
+    <div className="absolute right-4 bottom-[200px] sm:bottom-28 flex flex-col gap-4 items-center z-30">
       {/* Nút Thả Tim */}
       <div className="flex flex-col items-center">
         <button

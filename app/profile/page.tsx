@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { mockVideos } from "../data/mockData";
-import { HeartIcon } from "../components/Icons";
+import { mockVideos, mockUserProfile } from "../data/mockData";
 import Button from "../components/Button";
 import { ProfileVideoList } from "../components/ProfileVideoList";
 
@@ -11,15 +10,7 @@ export default function Profile() {
     "videos" | "liked" | "saved"
   >("videos");
 
-  const userProfile = {
-    name: "Lê Minh Tân",
-    username: "@le_minh_tan",
-    avatar: "	https://avatars.githubusercontent.com/u/140865049?v=4",
-    bio: "Lập trình viên Front-end đam mê xây dựng sản phẩm tối ưu & giao diện tuyệt đẹp 💻✨",
-    followingCount: 86,
-    followersCount: "1.2K",
-    likesTotal: "45.2K",
-  };
+  const userProfile = mockUserProfile;
 
   return (
     <div className="w-full h-full bg-bg-dark text-white p-4 pb-24 overflow-y-auto scrollbar-none flex flex-col items-center">

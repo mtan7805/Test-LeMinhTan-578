@@ -1,4 +1,15 @@
 import { Video } from "../types/video";
+import { UserProfile } from "../types/user";
+
+export const mockUserProfile: UserProfile = {
+  name: "Lê Minh Tân",
+  username: "@le_minh_tan",
+  avatar: "https://avatars.githubusercontent.com/u/140865049?v=4",
+  bio: "Lập trình viên Front-end đam mê xây dựng sản phẩm tối ưu & giao diện tuyệt đẹp 💻✨",
+  followingCount: 86,
+  followersCount: "1.2K",
+  likesTotal: "45.2K",
+};
 
 export const mockVideos: Video[] = [
   {
